@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="windows-1252"?>
+
+<!--
+    Document   : logback.xml
+    Created on : May 25, 2012
+    Author     : Soumendu
+    Description:
+        Purpose of the document follows.
+
+    //Instructions:
+    1. Remove {36} from %logger{36} in all occurances to show the full package name.
+    2. Change the level value to trace/debug for exhaustive log.
+    3. To stop console logging comment the line <appender-ref ref="STDOUT" />
+-->
+
+<configuration>
+    <appender name="FILE_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender" >
+        <Append>true</Append>
+        <file>c:/Birt/birt.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>c:/Birt/birt.%i.log.zip</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>100</maxIndex>
+        </rollingPolicy>
+
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>5MB</maxFileSize>
+        </triggeringPolicy>
+
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{dd:MM HH:mm} [%thread]  %-5level %logger{36}  - %msg%n</Pattern>
+        </layout>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <OnMatch>DENY</OnMatch>
+            <OnMismatch>NEUTRAL</OnMismatch>
+        </filter>
+        <!--filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator name="testngEval">
+                <expression>logger.getName().contains("testng")</expression>
+            </evaluator>
+            <OnMismatch>ACCEPT</OnMismatch>
+            <OnMatch>DENY</OnMatch>
+        </filter-->
+    </appender>
+
+    <appender name="FILE_ERR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <Append>true</Append>
+        <file>c:/Birt/birt.err</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>c:/Birt/birt.%i.log.zip</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>100</maxIndex>
+        </rollingPolicy>
+
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>5MB</maxFileSize>
+        </triggeringPolicy>
+
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{dd:MM HH:mm} [%thread]  %-5level %logger{36}  - %msg%n</Pattern>
+        </layout>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <OnMismatch>DENY</OnMismatch>
+            <OnMatch>ACCEPT</OnMatch>
+        </filter>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{dd:MM HH:mm} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+        </layout>
+    </appender>
+    <appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{dd:MM HH:mm} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+        </layout>
+    </appender>
+    <!-- ### log just the SQL ### -->
+
+
+    <!-- ### log JDBC bind parameters ### -->
+    <logger name="org.hibernate" level="WARN"/>
+    <logger name="org.hibernate.SQL" level="DEBUG"/>
+    <logger name="org.hibernate.tool.hbm2ddl" level="WARN"/>
+    <logger name="org.quartz.core.QuartzSchedulerThread" level="ERROR"/>
+    
+    <root>
+        <level value="trace" />
+        <appender-ref ref="FILE_LOG" />
+        <appender-ref ref="FILE_ERR" />
+    </root>
+</configuration>
